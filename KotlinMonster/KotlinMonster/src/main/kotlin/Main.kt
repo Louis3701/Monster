@@ -1,24 +1,48 @@
 package org.example
+import Entraineur
+import org.example.monstres.EspeceMonstre
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
+var joueur = Entraineur(1,"Sacha",100)
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
+fun main() {
+    val pikachu = EspeceMonstre(
+        id = 25,
+        nom = "Pikachu",
+        description = "Un petit Pokémon de type Électrik, mascotte célèbre.",
+        basePV = 35,
+        baseAttaque = 55,
+        baseDefense = 40,
+        baseVitesse = 90,
+        modificateurPV = 1.0,
+        modificateurAttaque = 1.0,
+        modificateurDefense = 1.0,
+        modificateurVitesse = 1.0,
+        modPV = 0.0,
+        modAtt = 0.0,
+        modDef = 0.0,
+        modVit = 0.0,
+        evolution = "Raichu",
+        particularites = "Très affectueux, adore le ketchup",
+        caracteres = "Rapide, loyal"
+    )
+
+    println("===== TEST EspeceMonstre =====")
+    println("Nom : ${pikachu.nom}")
+    println("PV de base : ${pikachu.basePV}")
+    println("Vitesse : ${pikachu.baseVitesse}")
+    println("Évolution : ${pikachu.evolution}")
+
+    try {
+        val art = pikachu.afficheArt()
+        println("Art ASCII de ${pikachu.nom} :\n$art")
+    } catch (e: Exception) {
+        println("⚠ Aucun fichier ASCII trouvé pour ${pikachu.nom}.")
     }
-    // ==== TESTS DES COULEURS ====
-    println(changeCouleur("Hello","rouge"))
-    println(changeCouleur("World","bleu"))
-    println("Hello ${changeCouleur("my","jaune")} World")
-    println(changeCouleur("Truc","marron"))
 }
+
+
 /**
  * Change la couleur du message donné selon le nom de la couleur spécifié.
  * Cette fonction utilise les codes d'échappement ANSI pour appliquer une couleur à la sortie console. Si un nom de couleur
