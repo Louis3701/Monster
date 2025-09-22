@@ -1,12 +1,11 @@
 package org.example.monde
 
 import org.example.monstres.EspeceMonstre
-import org.example.monde.Monstre
 
 class Zone(
     val id: Int,
     val nom: String,
-    val expZone: Int,
+    val expZone: MutableList<EspeceMonstre>,
     var especesMonstres: MutableList<EspeceMonstre> = mutableListOf(),
     var zoneSuivante: Zone? = null,
     var zonePrecedente: Zone? = null

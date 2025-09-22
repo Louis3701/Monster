@@ -1,13 +1,15 @@
 package org.example
 
 import Entraineur
-import org.example.monstres.EspeceMonstre
 import org.example.monde.Zone
+import org.example.monstres.EspeceMonstre
+import org.example.monstres.IndividuMonstre
 
-// Création du joueur (un entraîneur)
-var joueur = Entraineur(1, "Sacha", 100)
 
-// === Déclaration des espèces de monstres ===
+// Création de l'entraîneur
+var joueur = Entraineur(1,"Sacha",100)
+
+// Création d'une espèce de monstre (exemple : Pikachu)
 val pikachu = EspeceMonstre(
     id = 25,
     nom = "Pikachu",
@@ -29,31 +31,35 @@ val pikachu = EspeceMonstre(
     caracteres = "Rapide, loyal"
 )
 
-// === Déclaration des zones (avant main) ===
-// Ici on place directement id, nom et liste mutable d’espèces
-val route1 = Zone(
-    id = 1,
-    nom = "Route 1",
-    expZone = 50,
-    especesMonstres = mutableListOf(pikachu) // pour l’instant on met Pikachu dans cette zone
-)
-
-val route2 = Zone(
-    id = 2,
-    nom = "Route 2",
-    expZone = 100,
-    especesMonstres = mutableListOf(pikachu) // exemple : même espèce pour tester
-)
+// Création de deux zones (exemple)
+val route1 = Zone(1, "Route 1", mutableListOf(pikachu))
+val route2 = Zone(2, "Route 2", mutableListOf(pikachu))
 
 fun main() {
-    // === Relier les zones ===
-    // On relie route1 → route2
+    // On relie les zones entre elles
     route1.zoneSuivante = route2
-    // Et route2 ← route1
     route2.zonePrecedente = route1
 
-    println("===== TEST Zone =====")
-    println("Zone 1 : ${route1.nom}, Exp : ${route1.expZone}, Suivante : ${route1.zoneSuivante?.nom}")
-    println("Zone 2 : ${route2.nom}, Exp : ${route2.expZone}, Précédente : ${route2.zonePrecedente?.nom}")
+    println("===== TEST EspeceMonstre =====")
+    println("Nom : ${pikachu.nom}")
+    println("PV de base : ${pikachu.basePV}")
+    println("Vitesse : ${pikachu.baseVitesse}")
+    println("Évolution : ${pikachu.evolution}")
+
+    // === TEST IndividuMonstre ===
+    val pikachuIndividu = IndividuMonstre(
+        id = 1,
+        nom = "Mon Pikachu",
+        espece = pikachu,
+        entraineur = joueur
+    )
+
+    // Afficher les infos du monstre
+    pikachuIndividu.afficherInfos()
+
+    // Simuler un level up
+    pikachuIndividu.levelUp()
+    println("Après un level up :")
+    pikachuIndividu.afficherInfos()
 }
 
