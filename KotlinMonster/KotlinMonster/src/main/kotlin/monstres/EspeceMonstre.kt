@@ -57,8 +57,38 @@ class EspeceMonstre(
      * @return Une chaîne contenant le dessin ASCII du monstre.
      */
     fun afficheArt(deface: Boolean = true): String {
-        val nomFichier = if (deface) "${nom.lowercase()}_front.txt" else "${nom.lowercase()}_back.txt"
-        val art = java.io.File("src/main/resources/art/$nomFichier").readText()
-        return art.replace("/", "⧸").replace("\u000B", "\u001B")
+        val lc = nom.lowercase()
+        val fileName = if (deface) "front.txt" else "back.txt"
+        val flatName = if (deface) "${lc}_front.txt" else "${lc}_back.txt"
+
+        // Ordre d’essai: (classpath) art/<lc>_front.txt, art/<lc>/front.txt, puis (fichier) équivalents
+        val classpathCandidates = listOf(
+            "/art/$flatName",
+            "/art/$lc/$fileName",
+            "art/$flatName",
+            "art/$lc/$fileName"
+        )
+
+        // 1) Tentative via le classpath (packagé dans resources)
+        for (path in classpathCandidates) {
+            val stream = this::class.java.getResourceAsStream(path)
+                ?: Thread.currentThread().contextClassLoader.getResourceAsStream(path.removePrefix("/"))
+            val text = stream?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }
+            if (text != null) return text
+        }
+
+        // 2) Repli: chemins sur disque (utile en exécution depuis l’IDE)
+        val fileCandidates = listOf(
+            "src/main/resources/art/$flatName",
+            "src/main/resources/art/$lc/$fileName"
+        )
+        for (p in fileCandidates) {
+            val text = runCatching { java.io.File(p).readText(Charsets.UTF_8) }.getOrNull()
+            if (text != null) return text
+        }
+
+        return "(art introuvable: $flatName ou $lc/$fileName)"
     }
-}
+    
+    }
+

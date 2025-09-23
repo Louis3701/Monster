@@ -1,3 +1,5 @@
+import org.example.item.Item
+
 /**
  * Représente un entraîneur dans le contexte du jeu.
  *
@@ -7,15 +9,14 @@
  * @property id L'identifiant unique de l'entraîneur.
  * @property nom Le nom de l'entraîneur.
  * @property argents La quantité d'argent en possession de l'entraîneur.
-
  */
 class Entraineur(
     var id: Int,
     var nom: String,
     var argents:Int,
-    //TODO equipeMonstre
-    //TODO boiteMonstre
-    //TODO sacAKube
+    var equipeMonstre: MutableList<org.example.monstres.IndividuMonstre> = mutableListOf(),
+    var boiteMonstre: MutableList<org.example.monstres.IndividuMonstre> = mutableListOf(),
+    var sacAItems: MutableList<Item> = mutableListOf()
 ) {
     /**
      * Affiche les détails de l'entraîneur, y compris son nom et la quantité d'argent en sa possession.

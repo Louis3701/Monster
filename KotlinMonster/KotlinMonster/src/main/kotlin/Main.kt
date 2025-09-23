@@ -4,62 +4,105 @@ import Entraineur
 import org.example.monde.Zone
 import org.example.monstres.EspeceMonstre
 import org.example.monstres.IndividuMonstre
+import org.example.item.Badge
+import org.example.item.MonsterKube
 
+// ====================================================
+// 1) Création de l’entraîneur
+// ====================================================
+val joueur = Entraineur(1, "Sacha", 100)
 
-// Création de l'entraîneur
-var joueur = Entraineur(1,"Sacha",100)
-
-// Création d'une espèce de monstre (exemple : Pikachu)
-val pikachu = EspeceMonstre(
-    id = 25,
-    nom = "Pikachu",
-    description = "Un petit Pokémon de type Électrik, mascotte célèbre.",
-    basePV = 35,
-    baseAttaque = 55,
-    baseDefense = 40,
-    baseVitesse = 90,
-    modificateurPV = 1.0,
-    modificateurAttaque = 1.0,
-    modificateurDefense = 1.0,
-    modificateurVitesse = 1.0,
-    modPV = 0.0,
-    modAtt = 0.0,
-    modDef = 0.0,
-    modVit = 0.0,
-    evolution = "Raichu",
-    particularites = "Très affectueux, adore le ketchup",
-    caracteres = "Rapide, loyal"
+// ====================================================
+// 2) Création d'une espèce de monstre
+// ====================================================
+val springleaf = EspeceMonstre(
+    id = 1,
+    nom = "Springleaf",
+    description = "Petit monstre espiègle rond comme une graine, adore le soleil.",
+    basePV = 60,
+    baseAttaque = 9,
+    baseDefense = 11,
+    baseVitesse = 10,
+    modificateurPV = 6.5,
+    modificateurAttaque = 9.5,
+    modificateurDefense = 8.0,
+    modificateurVitesse = 7.0,
+    modPV = 14.0,
+    modAtt = 8.0,
+    modDef = 7.0,
+    modVit = 8.0,
+    evolution = "???", // à remplir si besoin
+    particularites = "Sa feuille sur la tête indique son humeur.",
+    caracteres = "Curieux, amical, timide"
+)
+val flamkip = EspeceMonstre(
+    id = 4,
+    nom = "Flamkip",
+    description = "Petit animal entouré de flammes, déteste le froid.",
+    basePV = 50,
+    baseAttaque = 12,
+    baseDefense = 8,
+    baseVitesse = 13,
+    modificateurPV = 10.0,
+    modificateurAttaque = 5.5,
+    modificateurDefense = 9.5,
+    modificateurVitesse = 12.0,
+    modPV = 22.0,
+    modAtt = 16.0,
+    modDef = 7.0,
+    modVit = 10.0,
+    evolution = "???",
+    particularites = "Sa flamme change d’intensité selon son énergie.",
+    caracteres = "Impulsif, joueur, loyal"
 )
 
-// Création de deux zones (exemple)
-val route1 = Zone(1, "Route 1", mutableListOf(pikachu))
-val route2 = Zone(2, "Route 2", mutableListOf(pikachu))
+// ====================================================
+// 3) Création de zones
+// ====================================================
+val route1 = Zone(1, "Forêt Mystérieuse", mutableListOf(springleaf))
+val route2 = Zone(2, "Plaine Ensoleillée", mutableListOf(springleaf))
+
+// ====================================================
+// 4) Fonction main
+// ====================================================
+
+// Objet MonsterKube disponible globalement (avant main)
+val kubeBasique = org.example.item.MonsterKube(
+    id = 100,
+    nom = "MonsterKube",
+    description = "Une kube standard pour capturer des monstres.",
+    chanceCapture = 30.0
+)
 
 fun main() {
-    // On relie les zones entre elles
-    route1.zoneSuivante = route2
-    route2.zonePrecedente = route1
-
-    println("===== TEST EspeceMonstre =====")
-    println("Nom : ${pikachu.nom}")
-    println("PV de base : ${pikachu.basePV}")
-    println("Vitesse : ${pikachu.baseVitesse}")
-    println("Évolution : ${pikachu.evolution}")
-
-    // === TEST IndividuMonstre ===
-    val pikachuIndividu = IndividuMonstre(
+    // Crée un monstre de démonstration et affiche l’art + les détails côte à côte
+    val monstreDemo = IndividuMonstre(
         id = 1,
-        nom = "Mon Pikachu",
-        espece = pikachu,
+        nom = "springleaf",
+        expInit = 1500.0,
+        espece = springleaf,
         entraineur = joueur
     )
 
-    // Afficher les infos du monstre
-    pikachuIndividu.afficherInfos()
+    // Affiche dans le terminal comme dans l’exemple
+    monstreDemo.afficheDetail(coteACote = true)
 
-    // Simuler un level up
-    pikachuIndividu.levelUp()
-    println("Après un level up :")
-    pikachuIndividu.afficherInfos()
+    // Test temporaire: création d'un badge (hérite de Item)
+    val badgePierre = Badge(
+        id = 1,
+        nom = "Badge Roche",
+        description = "Badge gagné lorsque le joueur atteint l'arène de pierre",
+        champion = joueur
+    )
+    println("Badge créé -> id=${badgePierre.id}, nom=${badgePierre.nom}, champion=${badgePierre.champion.nom}")
 }
+
+
+
+
+
+
+
+
+
 
