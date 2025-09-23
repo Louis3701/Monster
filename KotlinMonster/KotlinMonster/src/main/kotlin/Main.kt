@@ -6,6 +6,7 @@ import org.example.monstres.EspeceMonstre
 import org.example.monstres.IndividuMonstre
 import org.example.item.Badge
 import org.example.item.MonsterKube
+import org.example.jeu.CombatMonstre
 
 // ====================================================
 // 1) Création de l’entraîneur
@@ -86,6 +87,32 @@ fun main() {
 
     // Affiche dans le terminal comme dans l’exemple
     monstreDemo.afficheDetail(coteACote = true)
+
+    // Prépare un combat de démonstration et affiche si c'est "Game Over"
+    // 1) Ajouter le monstre du joueur dans son équipe
+    joueur.equipeMonstre.add(monstreDemo)
+
+    // 2) Créer un monstre sauvage
+    val monstreSauvage = IndividuMonstre(
+        id = 2,
+        nom = "Flamkip sauvage",
+        expInit = 0.0,
+        espece = flamkip,
+        entraineur = null
+    )
+
+    // 3) Créer le combat
+    val combat = CombatMonstre(monstreJoueur = monstreDemo, monstreSauvage = monstreSauvage)
+
+    // 4) Démo: simuler un KO du monstre du joueur pour illustrer le "Game Over"
+    monstreDemo.pv = 0
+
+    val perdu = combat.gameOver()
+    if (perdu) {
+        println("=== GAME OVER ===")
+    } else {
+        println("Le combat continue...")
+    }
 
     // Test temporaire: création d'un badge (hérite de Item)
     val badgePierre = Badge(
