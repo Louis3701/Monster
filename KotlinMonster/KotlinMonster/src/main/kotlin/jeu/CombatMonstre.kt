@@ -42,7 +42,7 @@ class CombatMonstre(
                 if (!continuer) return
             }
         }
-        round++
+        // Note: l'incrément du round est géré par lancerCombat()
     }
 
     /**
@@ -291,6 +291,21 @@ class CombatMonstre(
             }
         }
         return reussite
+    }
+
+    fun lancerCombat() {
+        while (!gameOver() && !joueurGagne()) {
+            this.jouer()
+            println("======== Fin du Round : $round =======")
+            round++
+        }
+        if (gameOver()) {
+            val equipe = monstreJoueur.entraineur?.equipeMonstre
+            if (equipe != null) {
+                equipe.forEach { it.pv = it.pvMax }
+            }
+            println("Game Over !")
+        }
     }
 
     private fun afficherEtat() {
