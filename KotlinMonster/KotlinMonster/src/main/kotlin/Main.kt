@@ -104,15 +104,8 @@ fun main() {
     // 3) Créer le combat
     val combat = CombatMonstre(monstreJoueur = monstreDemo, monstreSauvage = monstreSauvage)
 
-    // 4) Démo: simuler un KO du monstre du joueur pour illustrer le "Game Over"
-    monstreDemo.pv = 0
-
-    val perdu = combat.gameOver()
-    if (perdu) {
-        println("=== GAME OVER ===")
-    } else {
-        println("Le combat continue...")
-    }
+    // Lancer un vrai combat interactif dans le terminal
+    combat.combattreDansLeTerminal(chanceCaptureBase = kubeBasique.chanceCapture)
 
     // Test temporaire: création d'un badge (hérite de Item)
     val badgePierre = Badge(
