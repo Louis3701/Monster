@@ -18,5 +18,6 @@ class Element(
 
     fun ajouterImmunite(element: Element) {
         immunises.add(element)
+
     }
 }
