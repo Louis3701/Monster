@@ -1,10 +1,12 @@
 package org.example.monde
 
-import Entraineur
 import org.example.jeu.CombatMonstre
+import org.example.jeu.Partie
 import org.example.monstres.EspeceMonstre
 import org.example.monstres.IndividuMonstre
 import kotlin.random.Random
+
+
 
 class Zone(
     val id: Int,
@@ -38,14 +40,14 @@ class Zone(
      * Démarre un combat entre un monstre sauvage généré et le premier monstre du joueur
      * ayant des PV > 0. Ne fait rien si aucun monstre valide n'est disponible.
      */
-    fun rencontreMonstre(joueur: Entraineur) {
+    fun rencontreMonstre(joueur: Partie) {
         val monstreSauvage = genererMonstre()
-        val premierPokemon = joueur.equipeMonstre.firstOrNull { it.pv > 0 }
-        if (premierPokemon == null) {
+        val premierMonstre = joueur.joueur.equipeMonstre.firstOrNull { it.pv > 0 }
+        if (premierMonstre == null) {
             println("Aucun monstre apte au combat dans l'équipe de ${joueur.nom}.")
             return
         }
-        val combat = CombatMonstre(monstreJoueur = premierPokemon, monstreSauvage = monstreSauvage)
+        val combat = CombatMonstre(monstreJoueur = premierMonstre, monstreSauvage = monstreSauvage)
         combat.lancerCombat()
     }
 }

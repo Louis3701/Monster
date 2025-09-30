@@ -5,7 +5,6 @@ import org.example.monde.Zone
 import org.example.monstres.EspeceMonstre
 import org.example.monstres.IndividuMonstre
 import org.example.item.Badge
-import org.example.item.MonsterKube
 import org.example.jeu.CombatMonstre
 
 // ====================================================
