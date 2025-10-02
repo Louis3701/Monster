@@ -1,5 +1,7 @@
 package org.example.monstres
 
+import monstre.Element
+
 /**
  * La classe [EspeceMonstre] représente une espèce de monstre (par exemple : Pikachu, Bulbizarre, etc.).
  * Elle définit les caractéristiques générales de l’espèce, et non celles d’un individu précis.
@@ -49,6 +51,7 @@ class EspeceMonstre(
     val particularites: String = "",
     val caracteres: String = ""
 ) {
+    val elements: MutableList<Element> = mutableListOf()
 
     /**
      * Affiche l’art ASCII de l’espèce de monstre.

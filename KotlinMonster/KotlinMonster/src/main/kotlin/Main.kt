@@ -1,6 +1,7 @@
 package org.example
 
 import Entraineur
+import monstre.Element
 import org.example.monde.Zone
 import org.example.monstres.EspeceMonstre
 import org.example.monstres.IndividuMonstre
@@ -8,12 +9,22 @@ import org.example.item.Badge
 import org.example.jeu.CombatMonstre
 
 // ====================================================
+// 0) Déclaration des Éléments (globaux)
+// ====================================================
+val feu = Element(1, "Feu")
+val plante = Element(2, "Plante")
+val eau = Element(3, "Eau")
+val insecte = Element(4, "Insecte")
+val roche = Element(5, "Roche")
+val normal = Element(6, "Normal")
+
+// ====================================================
 // 1) Création de l’entraîneur
 // ====================================================
 val joueur = Entraineur(1, "Sacha", 100)
 
 // ====================================================
-// 2) Création d'une espèce de monstre
+// 2) Création d'espèces de monstres
 // ====================================================
 val springleaf = EspeceMonstre(
     id = 1,
@@ -35,6 +46,7 @@ val springleaf = EspeceMonstre(
     particularites = "Sa feuille sur la tête indique son humeur.",
     caracteres = "Curieux, amical, timide"
 )
+
 val flamkip = EspeceMonstre(
     id = 4,
     nom = "Flamkip",
@@ -63,10 +75,8 @@ val route1 = Zone(1, "Forêt Mystérieuse", mutableListOf(springleaf))
 val route2 = Zone(2, "Plaine Ensoleillée", mutableListOf(springleaf))
 
 // ====================================================
-// 4) Fonction main
+// 4) Objet global
 // ====================================================
-
-// Objet MonsterKube disponible globalement (avant main)
 val kubeBasique = org.example.item.MonsterKube(
     id = 100,
     nom = "MonsterKube",
@@ -74,24 +84,45 @@ val kubeBasique = org.example.item.MonsterKube(
     chanceCapture = 30.0
 )
 
+// ====================================================
+// 5) Fonction main
+// ====================================================
 fun main() {
-    // Crée un monstre de démonstration et affiche l’art + les détails côte à côte
+    // --- Définition des relations entre Éléments ---
+    feu.forces.addAll(listOf(plante, insecte))
+    feu.faiblesses.addAll(listOf(eau, roche, feu))
+
+    plante.forces.addAll(listOf(eau, roche))
+    plante.faiblesses.addAll(listOf(feu, insecte))
+
+    eau.forces.addAll(listOf(feu, roche))
+    eau.faiblesses.addAll(listOf(plante))
+
+    insecte.forces.addAll(listOf(plante))
+    insecte.faiblesses.addAll(listOf(feu, roche))
+
+    roche.forces.addAll(listOf(feu, insecte))
+    roche.faiblesses.addAll(listOf(eau, plante))
+
+    normal.faiblesses.add(roche)
+
+    // --- Associer des éléments aux espèces ---
+    springleaf.elements.add(plante) // Springleaf est de type 🌱
+    flamkip.elements.add(feu)       // Flamkip est de type 🔥
+
+    // --- Démonstration ---
     val monstreDemo = IndividuMonstre(
         id = 1,
-        nom = "springleaf",
+        nom = "Springleaf",
         expInit = 1500.0,
         espece = springleaf,
         entraineur = joueur
     )
 
-    // Affiche dans le terminal comme dans l’exemple
     monstreDemo.afficheDetail(coteACote = true)
 
-    // Prépare un combat de démonstration et affiche si c'est "Game Over"
-    // 1) Ajouter le monstre du joueur dans son équipe
     joueur.equipeMonstre.add(monstreDemo)
 
-    // 2) Créer un monstre sauvage
     val monstreSauvage = IndividuMonstre(
         id = 2,
         nom = "Flamkip sauvage",
@@ -100,29 +131,24 @@ fun main() {
         entraineur = null
     )
 
-    // 3) Créer le combat
-    val combat = CombatMonstre(monstreJoueur = monstreDemo, monstreSauvage = monstreSauvage)
+    val combat = CombatMonstre(
+        monstreJoueur = monstreDemo,
+        monstreSauvage = monstreSauvage
+    )
 
-    // Lancer un vrai combat interactif dans le terminal
     combat.combattreDansLeTerminal(chanceCaptureBase = kubeBasique.chanceCapture)
 
-    // Test temporaire: création d'un badge (hérite de Item)
     val badgePierre = Badge(
         id = 1,
         nom = "Badge Roche",
         description = "Badge gagné lorsque le joueur atteint l'arène de pierre",
         champion = joueur
     )
+
     println("Badge créé -> id=${badgePierre.id}, nom=${badgePierre.nom}, champion=${badgePierre.champion.nom}")
+
+    // --- Test efficacité éléments ---
+    println("🔥 contre 🌱 : ${feu.efficaciteContre(plante)}")  // 2.0
+    println("🔥 contre 💧 : ${feu.efficaciteContre(eau)}")     // 0.5
+    println("💧 contre 🪨 : ${eau.efficaciteContre(roche)}")   // 2.0
 }
-
-
-
-
-
-
-
-
-
-
-
